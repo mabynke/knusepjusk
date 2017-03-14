@@ -1,7 +1,7 @@
 Ting som må gjøres:
 
 
-Finne og laste opp koden som kjører rundt på banen og dytter på ting.
+Finne og laste opp koden som kjører rundt på banen og dytter på ting. [Mathias]
 
 Sette opp Bluetooth-kommunikasjon
 
