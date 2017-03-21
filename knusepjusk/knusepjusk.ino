@@ -67,29 +67,6 @@ PLab_ZumoMotors plab_Motors;
 //}
 //...........................................................................
 
-void setup() {
-  sensors.init(QTR_NO_EMITTER_PIN);  // 
-  Serial.begin(9600);
-  pinMode(ledPin,OUTPUT);
-  myServo.attach(servoPin); 
-  myServo.write(90);
-  button.waitForButton(); // start when button pressed
-//  btSerial.begin(9600); // Open serial communication to Bluetooth unit
-}
-
-
-float sonarDistance() {
-  // Gjør ett ping, og beregn avstanden
-  unsigned int time = sonar.ping();
-  float distance = sonar.convert_cm(time);
-  if (distance == 0.0) { // sonar gives zero when outside range
-    // Turn off LED and just go forward
-    digitalWrite(ledPin,LOW); 
-   } else {
-    digitalWrite(ledPin,HIGH);
-   }
-   return distance;
-}
 
 //void BTSerialMessageReceived(String msgString,int msgValue) {
 //  Serial.print("Message:"); Serial.print(msgString); // Debug print
@@ -101,20 +78,16 @@ float sonarDistance() {
 //  } 
 //}
 
-//bool shouldTurnLeft(int degree, int distance) {
-//  
-//}
+void setup() {
+  sensors.init(QTR_NO_EMITTER_PIN);  // 
+  Serial.begin(9600);
+  pinMode(ledPin,OUTPUT);
+  myServo.attach(servoPin); 
+  myServo.write(90);
+  button.waitForButton(); // start when button pressed
+//  btSerial.begin(9600); // Open serial communication to Bluetooth unit
+}
 
-
-//int reachedBorder(int sensors[]) {
-  // Sjekker om man står inntil kanten. 
-//  for (int i = 0; i < 6; ++i) {
-//    if (sensors[i] < QTR_THRESHOLD) {
-//      return 1;
-//    }
-//  }
-//  return 0;
-//}
 int state = SEARCH;
 
 void loop() {
@@ -127,5 +100,3 @@ void loop() {
       break;
   }
 }
-
-
