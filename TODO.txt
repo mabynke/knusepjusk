@@ -1,4 +1,4 @@
-Ting som må gjøres:
+﻿Ting som må gjøres:
 
 
 Finne og laste opp koden som kjører rundt på banen og dytter på ting. [Mathias]
@@ -9,6 +9,10 @@ Lage JavaFX-program for å snakke med roboten.
 
 Lage taktikk for kamp [Miriam]
 
+<<<<<<< HEAD
 Finne på ting den kan gjøre
 
 Detektere kollisjon med akselerometeret
+=======
+Finne på ting den kan gjøre [Miriam]
+>>>>>>> ddc55e2ed07faebdfd8467ba8179b3345559f5aa
