@@ -123,25 +123,25 @@ void turn(int spd, int degree) {
   motors.setSpeeds(leftSpeed, rightSpeed);
 }
 
-int reachedBorder(int sensors[]) {
+//int reachedBorder(int sensors[]) {
   // Sjekker om man står inntil kanten. 
-  for (int i = 0; i < 6; ++i) {
-    if (sensors[i] < QTR_THRESHOLD) {
-      return 1;
-    }
-  }
-  return 0;
-}
+//  for (int i = 0; i < 6; ++i) {
+//    if (sensors[i] < QTR_THRESHOLD) {
+//      return 1;
+//    }
+//  }
+//  return 0;
+//}
 
 void loop() {
 //   updateBTSerial();  // Check if we have input on the BT serial port.
    stepServo();
    sensors.read(sensor_values);
 
-  int borderStatus = reachedBorder(sensor_values);
+  int borderStatus = findBorder(sensor_values, NUM_SENSORS);
   Serial.print(borderStatus);
 
-   if (borderStatus == 1) {
+   if (borderStatus != 0) {
     // Sørger for at den ikke kjører utenfor
     int randAngle = random(100, 150);
     if (sensor_values[0] < QTR_THRESHOLD) {
@@ -154,7 +154,6 @@ void loop() {
    } else if (borderStatus == 0) {
    
    int distance = sonarDistance();
-//   Serial.prin(distance);
    if (distance > 0) {
       int actual_degrees_servo = degreesServo + SERVO_OFFSET;
       if (actual_degrees_servo > 100) {

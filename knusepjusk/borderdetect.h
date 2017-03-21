@@ -23,7 +23,7 @@ int findBorder(int[] sensors, int num_sensors) {
 
 	bool left = sensors[0] < QTR_THRESHOLD;
 	bool secondLeft = sensors[1] < QTR_THRESHOLD;
-	bool secondRight sensors[num_sensors - 1] < QTR_THRESHOLD;
+	bool secondRight = sensors[num_sensors - 1] < QTR_THRESHOLD;
 	bool right = sensors[num_sensors] < QTR_THRESHOLD;
 	if (left && right) return 3;
 	if (left && secondLeft) return 2;
