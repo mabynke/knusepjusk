@@ -9,9 +9,6 @@
 #include <ZumoReflectanceSensorArray.h>
 #include <SoftwareSerial.h>
 #include <PLabBTSerial.h>
-
-// this might need to be tuned for different lighting conditions, surfaces, etc.
-#define QTR_THRESHOLD  1800 // 
   
 // these might need to be tuned for different motor types
 int REVERSE_SPEED  = 400; // 0 is stopped, 400 is full speed
