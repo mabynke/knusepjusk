@@ -1,11 +1,3 @@
-#include <NewPing.h>
-#include <NewServo.h>
-#include <Pushbutton.h>
-#include <PLab_ZumoMotors.h>
-#include <ZumoMotors.h>
-#include <QTRSensors.h>
-#include <ZumoReflectanceSensorArray.h>
-
 // this might need to be tuned for different lighting conditions, surfaces, etc.
 #define QTR_THRESHOLD  1800 // 
 
