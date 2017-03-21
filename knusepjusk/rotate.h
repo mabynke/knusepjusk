@@ -1,3 +1,6 @@
+#ifndef ROTATE_H
+#define ROTATE_H
+
 #include <NewPing.h>
 #include <NewServo.h>
 #include <Pushbutton.h>
@@ -15,3 +18,5 @@ int rotate() {
   }
   return 0;
 }
+
+#endif

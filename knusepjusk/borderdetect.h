@@ -1,3 +1,5 @@
+#ifndef BORDERDETECT_H
+#define BORDERDETECT_H
 // this might need to be tuned for different lighting conditions, surfaces, etc.
 #define QTR_THRESHOLD  1800 // 
 
@@ -24,4 +26,4 @@ int findBorder(int[] sensors, int num_sensors) {
 	if (right) return 3;
 	return 0;
 }
-
+#endif

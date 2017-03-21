@@ -1,3 +1,6 @@
+#ifndef PID_H
+#define PID_H
+
 #include "Arduino.h"
 
 double PID(double Value, double R, double P, double I, double D, double MIN, double MAX) {
@@ -7,3 +10,5 @@ double PID(double Value, double R, double P, double I, double D, double MIN, dou
   output = min(output, MAX);
   return output;
 }
+
+#endif
