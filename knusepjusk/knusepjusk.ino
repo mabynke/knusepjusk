@@ -11,12 +11,13 @@
 #include "borderdetect.h"
 #include "Pins.h"
 #include "Bluetooth.h"
-
+#include "stateSearch.h"
+/*
 // these might need to be tuned for different motor types
 int REVERSE_SPEED  = 400; // 0 is stopped, 400 is full speed
 int TURN_SPEED     = 300;
 int FORWARD_SPEED  = 250;
-
+*/
 #define NUM_SENSORS 6
 //unsigned int sensor_values[NUM_SENSORS]; // Denne bør defineres hvert sted den evt. trengs, ikke i denne filen.
 
@@ -99,18 +100,6 @@ float sonarDistance() {
 //  
 //}
 
-void turn(int spd, int degree) {
-  int leftSpeed;
-  int rightSpeed;
-  if (degree < 0) {
-    int leftSpeed = spd*cos(degree);
-    int rightSpeed = spd;
-  } else {
-    int leftSpeed = spd;
-    int rightSpeed = spd*cos(degree);
-  }
-  motors.setSpeeds(leftSpeed, rightSpeed);
-}
 
 //int reachedBorder(int sensors[]) {
   // Sjekker om man står inntil kanten. 
@@ -123,7 +112,7 @@ void turn(int spd, int degree) {
 //}
 
 void loop() {
-  search(sensors);
+  search(myServo, sensors, plab_Motors,sonar, degreesServo, degreesStep);
 }
 
 
