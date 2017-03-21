@@ -7,6 +7,8 @@ Sette opp Bluetooth-kommunikasjon
 
 Lage JavaFX-program for å snakke med roboten.
 
-Lage taktikk for kamp
+Lage taktikk for kamp [Miriam]
 
 Finne på ting den kan gjøre
+
+Detektere kollisjon med akselerometeret
