@@ -7,8 +7,8 @@
 #include <ZumoReflectanceSensorArray.h>
 #include <SoftwareSerial.h>
 #include <PLabBTSerial.h>
-#include <borderdetect.h>
 
+#include "borderdetect.h"
 #include "Pins.h"
 #include "Bluetooth.h"
 
@@ -18,7 +18,7 @@ int TURN_SPEED     = 300;
 int FORWARD_SPEED  = 250;
 
 #define NUM_SENSORS 6
-unsigned int sensor_values[NUM_SENSORS];
+//unsigned int sensor_values[NUM_SENSORS]; // Denne bør defineres hvert sted den evt. trengs, ikke i denne filen.
 
 #define SERVO_OFFSET 20  // DS: Degrees offset of servo... error in hardware...
  
@@ -134,40 +134,7 @@ void turn(int spd, int degree) {
 //}
 
 void loop() {
-//   updateBTSerial();  // Check if we have input on the BT serial port.
-   stepServo();
-   sensors.read(sensor_values);
-
-  int borderStatus = findBorder(sensor_values, NUM_SENSORS);
-  Serial.print(borderStatus);
-
-   if (borderStatus != 0) {
-    // Sørger for at den ikke kjører utenfor
-    int randAngle = random(100, 150);
-    if (sensor_values[0] < QTR_THRESHOLD) {
-       plab_Motors.backward(REVERSE_SPEED, 10);
-       plab_Motors.turnRight(TURN_SPEED,randAngle);
-     } else if (sensor_values[5] < QTR_THRESHOLD) {
-       plab_Motors.backward(REVERSE_SPEED, 10);
-       plab_Motors.turnLeft(TURN_SPEED,randAngle);
-     }
-   } else if (borderStatus == 0) {
-   
-   int distance = sonarDistance();
-   if (distance > 0) {
-      int actual_degrees_servo = degreesServo + SERVO_OFFSET;
-      if (actual_degrees_servo > 100) {
-        turn(TURN_SPEED,actual_degrees_servo-90);
-         BTSerialSendMessage(btSerial, "#angle",actual_degrees_servo);
-      } else if (actual_degrees_servo < 80) {
-         turn(TURN_SPEED,90-actual_degrees_servo);
-      } else {
-      myServo.write(degreesServo);
-      }
-    } else {
-      motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
-    }
-  } 
+  search(sensors);
 }
 
 
