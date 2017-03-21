@@ -9,6 +9,7 @@
 #include <ZumoReflectanceSensorArray.h>
 #include <SoftwareSerial.h>
 #include <PLabBTSerial.h>
+#include <borderdetect.h>
   
 // these might need to be tuned for different motor types
 int REVERSE_SPEED  = 400; // 0 is stopped, 400 is full speed

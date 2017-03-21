@@ -15,14 +15,21 @@ int findBorder(int[] sensors, int num_sensors) {
 	 * 
 	 * Returnerer 0 dersom ingen kant blir funnet.
 	 * Returnerer 1 dersom en kant blir funnet helt til venstre.
+	 * Returnerer 2 dersom en kant blir funnet litt til venstre.
 	 * Returnerer 3 dersom en kant blir funnet rett foran.
-	 * Returnerer 5 dersom en kant blir funnet til høyre.
+	 * Returnerer 4 dersom en kant blir funnet litt til høyre.
+	 * Returnerer 5 dersom en kant blir funnet helt til høyre.
 	 */
 
 	bool left = sensors[0] < QTR_THRESHOLD;
+	bool secondLeft = sensors[1] < QTR_THRESHOLD;
+	bool secondRight sensors[num_sensors - 1] < QTR_THRESHOLD;
 	bool right = sensors[num_sensors] < QTR_THRESHOLD;
-	if (left && right) return 2;
+	if (left && right) return 3;
+	if (left && secondLeft) return 2;
 	if (left) return 1;
+	if (right && secondRight) return 4;
 	if (right) return 3;
-	return 0; 
+	return 0;
 }
+
