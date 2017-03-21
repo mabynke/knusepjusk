@@ -2,14 +2,13 @@
 #include <PLab_ZumoMotors.h>
 #include <ZumoReflectanceSensorArray.h>
 
-#include "knusepjusk.ino"
 #include "borderdetect.h"
 
-int search(sensors) {
+int search(NewServo &myServo, ZumoReflectanceSensorArray &sensors) {
   unsigned int sensor_values[NUM_SENSORS];
   
   while (true) {
-    stepServo();
+    stepServo(myServo);
     sensors.read(sensor_values);
 
     int borderStatus = findBorder(sensor_values, NUM_SENSORS);
@@ -43,4 +42,17 @@ int search(sensors) {
       }
     }
   } 
+}
+
+
+void stepServo(NewServo &myServo) {
+   degreesServo = degreesServo + degreesStep;
+   if (degreesServo > 180) {
+       degreesStep = -degreesStep;
+       degreesServo = 180;
+   } else if (degreesServo < 0) {
+       degreesStep = -degreesStep;
+       degreesServo = 0;
+   } 
+   myServo.write(degreesServo);
 }

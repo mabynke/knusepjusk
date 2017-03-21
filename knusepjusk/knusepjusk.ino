@@ -71,17 +71,6 @@ void setup() {
 //  btSerial.begin(9600); // Open serial communication to Bluetooth unit
 }
 
-void stepServo() {
-   degreesServo = degreesServo + degreesStep;
-   if (degreesServo > 180) {
-       degreesStep = -degreesStep;
-       degreesServo = 180;
-   } else if (degreesServo < 0) {
-       degreesStep = -degreesStep;
-       degreesServo = 0;
-   } 
-   myServo.write(degreesServo);
-}
 
 float sonarDistance() {
   // Gjør ett ping, og beregn avstanden
