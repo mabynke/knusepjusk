@@ -1,5 +1,3 @@
-/*
- */
 #include <NewPing.h>
 #include <NewServo.h>
 #include <Pushbutton.h>
@@ -10,7 +8,10 @@
 #include <SoftwareSerial.h>
 #include <PLabBTSerial.h>
 #include <borderdetect.h>
-  
+
+#include "Pins.h"
+#include "Bluetooth.h"
+
 // these might need to be tuned for different motor types
 int REVERSE_SPEED  = 400; // 0 is stopped, 400 is full speed
 int TURN_SPEED     = 300;
@@ -25,17 +26,6 @@ ZumoReflectanceSensorArray sensors;
 
 
 ZumoMotors motors;
-
-const int ledPin=A4;
-
-const int echoPin = 2;
-const int triggerPin = 3;
-const int maxDistance = 50;
-
-const int servoPin = 6;
-
-const int txPin = 0; // Connected to tx on bt unit
-const int rxPin = 1; // Connected to rx on bt unit
 
 PLabBTSerial btSerial(txPin, rxPin);
 
@@ -70,22 +60,6 @@ PLab_ZumoMotors plab_Motors;
 //  }
 //}
 //...........................................................................
-
-//...........................................................................
-// Always include these two methods .
-// They send a message to the BT port, without or with an int value
-// 
-void BTSerialSendMessage(String msgString) {
-  btSerial.println(msgString); 
-}
-
-void BTSerialSendMessage(String msgString,int msgValue) {
-  btSerial.print(msgString); 
-  btSerial.print(",");
-  btSerial.println(msgValue);
-}
-//...........................................................................
-
 
 void setup() {
   sensors.init(QTR_NO_EMITTER_PIN);  // 
@@ -185,7 +159,7 @@ void loop() {
       int actual_degrees_servo = degreesServo + SERVO_OFFSET;
       if (actual_degrees_servo > 100) {
         turn(TURN_SPEED,actual_degrees_servo-90);
-         BTSerialSendMessage("#angle",actual_degrees_servo);
+         BTSerialSendMessage(btSerial, "#angle",actual_degrees_servo);
       } else if (actual_degrees_servo < 80) {
          turn(TURN_SPEED,90-actual_degrees_servo);
       } else {
