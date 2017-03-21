@@ -8,6 +8,7 @@
 #include <SoftwareSerial.h>
 #include <PLabBTSerial.h>
 
+#include "Utils.h"
 #include "borderdetect.h"
 #include "Pins.h"
 #include "Bluetooth.h"
@@ -22,6 +23,10 @@ int FORWARD_SPEED  = 250;
 //unsigned int sensor_values[NUM_SENSORS]; // Denne bør defineres hvert sted den evt. trengs, ikke i denne filen.
 
 #define SERVO_OFFSET 20  // DS: Degrees offset of servo... error in hardware...
+
+// Tilstander
+#define ATTACK 0
+#define SEARCH 1
  
 ZumoReflectanceSensorArray sensors;
 
@@ -110,9 +115,17 @@ float sonarDistance() {
 //  }
 //  return 0;
 //}
+int state = SEARCH;
 
 void loop() {
-  search(myServo, sensors, plab_Motors,sonar, degreesServo, degreesStep);
+  switch(state) {
+    case SEARCH:
+      state = search(myServo, sensors, plab_Motors,sonar, degreesServo, degreesStep);
+      break;
+    case ATTACK:
+      //TODO: attack()
+      break;
+  }
 }
 
 
