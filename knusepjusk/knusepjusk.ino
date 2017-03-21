@@ -12,7 +12,7 @@
 
 // this might need to be tuned for different lighting conditions, surfaces, etc.
 #define QTR_THRESHOLD  1800 // 
-
+  
 // these might need to be tuned for different motor types
 int REVERSE_SPEED  = 400; // 0 is stopped, 400 is full speed
 int TURN_SPEED     = 300;
@@ -22,7 +22,7 @@ int FORWARD_SPEED  = 250;
 unsigned int sensor_values[NUM_SENSORS];
 
 #define SERVO_OFFSET 20  // DS: Degrees offset of servo... error in hardware...
-
+ 
 ZumoReflectanceSensorArray sensors;
 
 
@@ -96,19 +96,19 @@ void setup() {
   myServo.attach(servoPin); 
   myServo.write(90);
   button.waitForButton(); // start when button pressed
-  //  btSerial.begin(9600); // Open serial communication to Bluetooth unit
+//  btSerial.begin(9600); // Open serial communication to Bluetooth unit
 }
 
 void stepServo() {
-  degreesServo = degreesServo + degreesStep;
-  if (degreesServo > 180) {
-    degreesStep = -degreesStep;
-    degreesServo = 180;
-  } else if (degreesServo < 0) {
-    degreesStep = -degreesStep;
-    degreesServo = 0;
-  } 
-  myServo.write(degreesServo);
+   degreesServo = degreesServo + degreesStep;
+   if (degreesServo > 180) {
+       degreesStep = -degreesStep;
+       degreesServo = 180;
+   } else if (degreesServo < 0) {
+       degreesStep = -degreesStep;
+       degreesServo = 0;
+   } 
+   myServo.write(degreesServo);
 }
 
 float sonarDistance() {
@@ -118,10 +118,10 @@ float sonarDistance() {
   if (distance == 0.0) { // sonar gives zero when outside range
     // Turn off LED and just go forward
     digitalWrite(ledPin,LOW); 
-  } else {
+   } else {
     digitalWrite(ledPin,HIGH);
-  }
-  return distance;
+   }
+   return distance;
 }
 
 //void BTSerialMessageReceived(String msgString,int msgValue) {
@@ -152,9 +152,9 @@ void turn(int spd, int degree) {
 }
 
 int reachedBorder(int sensors[]) {
-  // Sjekker om man står inntill kanten. 
-  for (auto s : sensors) {
-    if (s > QTR_THRESHOLD) {
+  // Sjekker om man står inntil kanten. 
+  for (int i = 0; i < 6; ++i) {
+    if (sensors[i] < QTR_THRESHOLD) {
       return 1;
     }
   }
@@ -162,37 +162,41 @@ int reachedBorder(int sensors[]) {
 }
 
 void loop() {
-  //   updateBTSerial();  // Check if we have input on the BT serial port.
-  stepServo();
-  sensors.read(sensor_values);
+//   updateBTSerial();  // Check if we have input on the BT serial port.
+   stepServo();
+   sensors.read(sensor_values);
 
-  if (reachedBorder == 1) {
+  int borderStatus = reachedBorder(sensor_values);
+  Serial.print(borderStatus);
+
+   if (borderStatus == 1) {
     // Sørger for at den ikke kjører utenfor
     int randAngle = random(100, 150);
     if (sensor_values[0] < QTR_THRESHOLD) {
-      plab_Motors.backward(REVERSE_SPEED, 10);
-      plab_Motors.turnRight(TURN_SPEED,randAngle);
-    } else if (sensor_values[5] < QTR_THRESHOLD) {
-      plab_Motors.backward(REVERSE_SPEED, 10);
-      plab_Motors.turnLeft(TURN_SPEED,randAngle);
-    }
-  } else if (reachedBorder == 0) {
-
-    int distance = sonarDistance(); 
-    if (distance > 0) {
+       plab_Motors.backward(REVERSE_SPEED, 10);
+       plab_Motors.turnRight(TURN_SPEED,randAngle);
+     } else if (sensor_values[5] < QTR_THRESHOLD) {
+       plab_Motors.backward(REVERSE_SPEED, 10);
+       plab_Motors.turnLeft(TURN_SPEED,randAngle);
+     }
+   } else if (borderStatus == 0) {
+   
+   int distance = sonarDistance();
+//   Serial.prin(distance);
+   if (distance > 0) {
       int actual_degrees_servo = degreesServo + SERVO_OFFSET;
       if (actual_degrees_servo > 100) {
         turn(TURN_SPEED,actual_degrees_servo-90);
-        //         BTSerialSendMessage("#distance",distance);       
-        BTSerialSendMessage("#angle",actual_degrees_servo);
-        //         degreesServo = 90 - SERVO_OFFSET;
+         BTSerialSendMessage("#angle",actual_degrees_servo);
       } else if (actual_degrees_servo < 80) {
-        turn(TURN_SPEED,90-actual_degrees_servo);
-        //         degreesServo = 90 - SERVO_OFFSET;
+         turn(TURN_SPEED,90-actual_degrees_servo);
       } else {
-        //      myServo.write(degreesServo);
-      } else {
-        motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
+      myServo.write(degreesServo);
       }
-    } 
-  }
+    } else {
+      motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
+    }
+  } 
+}
+
+
