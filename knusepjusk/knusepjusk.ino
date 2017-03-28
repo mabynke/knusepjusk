@@ -36,19 +36,19 @@ void setup() {
 State state = SearchMoving;
 
 void loop() {
-  switch(state) {
-    case Attack:
-      state = attack(zumo, sensors);
-      break;
-    case SearchOnSpot:
-      state = searchOnSpot(zumo, sensors);
-      break;
-    case SearchMoving:
-      state = searchMoving(zumo, sensors);
-      break;
-    case AwayFromBorder:
-      state = awayFromBorder(zumo, sensors);
-      break;
-  }
+//  switch(state) {
+//    case Attack:
+//      state = attack(zumo, sensors);
+//      break;
+//    case SearchOnSpot:
+//      state = searchOnSpot(zumo, sensors);
+//      break;
+//    case SearchMoving:
+//      state = searchMoving(zumo, sensors);
+//      break;
+//    case AwayFromBorder:
+//      state = awayFromBorder(zumo, sensors);
+//      break;
+//  }
 }
 
