@@ -9,6 +9,7 @@
 
 State awayFromBorder(KnuseZumo &zumo, ZumoReflectanceSensorArray &sensors) {
   Serial.println("AwayFromBorder");
+  BTSerialSendMessage("AwayFromBorder");
   
   int borderStatus = findBorder(sensors);
   int REVERSE_SPEED = 400;
