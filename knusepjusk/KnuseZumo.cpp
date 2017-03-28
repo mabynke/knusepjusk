@@ -7,7 +7,7 @@ const int newEnemyDetectedZeros = 4;
 const int stillSeesEnemyZeros = 20;
 const int forwardServoMargin = 5; // grader
 
-KnuseZumo::KnuseZumo(NewPing &leftSonar, NewPing &rightSonar, NewServo &servo) :
+KnuseZumo::KnuseZumo(NewPing &leftSonar, NewPing &rightSonar) :
   leftSonar(leftSonar),
   rightSonar(rightSonar),
   leftSonarDistances(sonarNumber),

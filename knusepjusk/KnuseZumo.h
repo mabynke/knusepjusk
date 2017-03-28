@@ -4,7 +4,6 @@
 #include <PLab_ZumoMotors.h>
 #include <ZumoReflectanceSensorArray.h>
 #include <NewPing.h>
-#include <NewServo.h>
 #include "Arduino.h"
 #include "ArrayRing.h"
 
@@ -29,7 +28,7 @@
 
 class KnuseZumo : public PLab_ZumoMotors {
     public:
-        KnuseZumo(NewPing &, NewPing &, NewServo &);
+        KnuseZumo(NewPing &, NewPing &);
         void turnOnSpot(int _speed);
         void driveAndTurn(int _speed, int angle);
         void sendSonarPingLeft();
