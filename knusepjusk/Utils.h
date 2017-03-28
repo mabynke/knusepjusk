@@ -1,73 +1,58 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <NewServo.h>
-#include <NewPing.h>
-#include <PLab_ZumoMotors.h>
-#include <ZumoReflectanceSensorArray.h>
-#include <PLab_ZumoMotors.h>
+#define QTR_THRESHOLD 1800;
 
-#include "Arduino.h"
-#include "Pins.h"
-
-
-// Tilstander
-#define ATTACK 0
-#define SEARCH 1
-#define BORDER_FLEE 2
-
-int REVERSE_SPEED  = 400; // 0 is stopped, 400 is full speed
-int TURN_SPEED     = 300;
-int FORWARD_SPEED  = 250;
-
-void turn(PLab_ZumoMotors &plab_Motors, int spd, int degree) {
-  int leftSpeed;
-  int rightSpeed;
-  if (degree < 0) {
-    int leftSpeed = spd*cos(degree);
-    int rightSpeed = spd;
-  } else {
-    int leftSpeed = spd;
-    int rightSpeed = spd*cos(degree);
-  }
-  plab_Motors.setSpeeds(leftSpeed, rightSpeed);
+boolean fittingTime(int currentTime, int startTime, int duration) {
+  return (currentTime - startTime < duration);
 }
 
-void stepServo(NewServo &myServo, int& degreesServo, int& degreesStep) {
-   degreesServo = degreesServo + degreesStep;
-   if (degreesServo > 180) {
-       degreesStep = -degreesStep;
-       degreesServo = 180;
-   } else if (degreesServo < 0) {
-       degreesStep = -degreesStep;
-       degreesServo = 0;
-   } 
-   myServo.write(degreesServo);
-}
+int findBorder(ZumoReflectanceSensorArray &sensors) {
+  /*
+   * Tar inn verdiene fra de infrarøde sensorene i en array og antall sensorer (antall tall i arrayen).
+   * 
+   * Returnerer 0 dersom ingen kant blir funnet.
+   * Returnerer 1 dersom en kant blir funnet helt til venstre.
+   * Returnerer 2 dersom en kant blir funnet litt til venstre.
+   * Returnerer 3 dersom en kant blir funnet rett foran.
+   * Returnerer 4 dersom en kant blir funnet litt til høyre.
+   * Returnerer 5 dersom en kant blir funnet helt til høyre.
+   */
+//
+//   for (int i = 0; i < NUM_SENSORS; i++) {
+//    sensor_values[i]++;
+//  }
 
-float sonarDistance(NewPing& sonar) {
-  // Gjør ett ping, og beregn avstanden
-  unsigned int time = sonar.ping();
-  float distance = sonar.convert_cm(time);
-  if (distance == 0.0) { // sonar gives zero when outside range
-    // Turn off LED and just go forward
-    digitalWrite(ledPin,LOW); 
-   } else {
-    digitalWrite(ledPin,HIGH);
-   }
-   return distance;
-}
+  int NUM_SENSORS = 6;
+  int sensor_values[NUM_SENSORS];
 
+  sensors.read(sensor_values);
+//  for (int i = 0; i < NUM_SENSORS; i++) {
+//    Serial.print(sensor_values[i]);
+//    Serial.print(" ");
+//  }
 
-void borderFlee(PLab_ZumoMotors &plab_Motors, int borderStatus) {
-  int randAngle = random(100, 150); // Bør settes av borderStatus
-  if (borderStatus == 1 || borderStatus == 2) {
-    plab_Motors.backward(REVERSE_SPEED, 10);
-    plab_Motors.turnRight(TURN_SPEED,randAngle);
-  } else if (borderStatus == 3 || borderStatus == 4) {
-    plab_Motors.backward(REVERSE_SPEED, 10);
-    plab_Motors.turnLeft(TURN_SPEED,randAngle);
-  }
+//  Serial.print(analogRead(4));
+  
+
+  bool left = sensor_values[0] < QTR_THRESHOLD;
+  bool secondLeft = sensor_values[1] < QTR_THRESHOLD;
+  bool secondRight = sensor_values[NUM_SENSORS - 2] < QTR_THRESHOLD;
+  bool right = sensor_values[NUM_SENSORS-1] < QTR_THRESHOLD;
+
+  //debugging
+//  Serial.print("LEFT: "); Serial.print(left); Serial.println();
+//  Serial.print("SECOND_LEFT: "); Serial.print(secondLeft); Serial.println();
+//  Serial.print("RIGHT: "); Serial.print(right); Serial.println();
+//  Serial.print("SECOND_RIGHT: "); Serial.print(secondRight); Serial.println();
+//  delay(500);
+  
+  if (left && right) return 3;
+  if (left && secondLeft) return 2;
+  if (left) return 1;
+  if (right && secondRight) return 4;
+  if (right) return 3;
+  return 0;
 }
 
 #endif
