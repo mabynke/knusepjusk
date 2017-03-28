@@ -7,17 +7,12 @@ const int newEnemyDetectedZeros = 4;
 const int stillSeesEnemyZeros = 20;
 const int forwardServoMargin = 5; // grader
 
-KnuseZumo::KnuseZumo(NewPing &sonar, NewServo &servo) :
-  sonar(sonar),
-  myServo(servo), 
-  sonarDistances(sonarNumber)
+KnuseZumo::KnuseZumo(NewPing &leftSonar, NewPing &rightSonar, NewServo &servo) :
+  leftSonar(leftSonar),
+  rightSonar(rightSonar),
+  leftSonarDistances(sonarNumber),
+  rightSonarDistances(sonarNumber)
   {};
-
-
-void KnuseZumo::sendSonarPing() {
-  unsigned int time = sonar.ping();
-  sonarDistances.add(sonar.convert_cm(time));
-}
 
 void KnuseZumo::turnOnSpot(int _speed) {
   /*
@@ -26,31 +21,6 @@ void KnuseZumo::turnOnSpot(int _speed) {
    */
    setLeftSpeed(-_speed);
    setRightSpeed(_speed);
-}
-
-void KnuseZumo::stepServo() {
-  /*
-   * Servoen roterer gitt ved 'degreesStep' og degreesServo
-   */
-   degreesServo = degreesServo + degreesStep;
-   if (degreesServo > 180) {
-       degreesStep = -degreesStep;
-       degreesServo = 180;
-   } else if (degreesServo < 0) {
-       degreesStep = -degreesStep;
-       degreesServo = 0;
-   } 
-   myServo.write(degreesServo - SERVO_OFFSET);
-}
-
-void KnuseZumo::setForwardServo() {
-  /*
-   * Gjør at servoen peker fremover
-   */
-  if (degreesServo < 90 - forwardServoMargin || degreesServo > 90 + forwardServoMargin) {
-    degreesServo = 90;
-    myServo.write(degreesServo - SERVO_OFFSET);
-  }
 }
 
 void KnuseZumo::driveAndTurn(int _speed, int angle) {
@@ -70,18 +40,35 @@ void KnuseZumo::driveAndTurn(int _speed, int angle) {
   setSpeeds(leftSpeed, rightSpeed);
 }
 
-float KnuseZumo::sonarDistance() {
+void KnuseZumo::sendSonarPingLeft() {
+  unsigned int time = leftSonar.ping();
+  leftSonarDistances.add(leftSonar.convert_cm(time));
+}
+
+void KnuseZumo::sendSonarPingRight() {
+  unsigned int time = rightSonar.ping();
+  rightSonarDistances.add(rightSonar.convert_cm(time));
+}
+
+float KnuseZumo::leftSonarDistance() {
   sendSonarPing();
-  return sonarDistances.getAverage();
+  return leftSonarDistances.getAverage();
+}
+
+float KnuseZumo::rightSonarDistance() {
+  sendSonarPing();
+  return rightSonarDistances.getAverage();
 }
 
 boolean KnuseZumo::newEnemyDetected() {
-  sendSonarPing();
-  return !sonarDistances.isLastNDigit(newEnemyDetectedZeros, 0, 0);
+  sendSonarPingLeft();
+  sendSonarPingRight();
+  return !(leftSonarDistances.isLastNDigit(newEnemyDetectedZeros, 0, 0) || rightSonarDistances.isLastNDigit(newEnemyDetectedZeros, 0, 0));
 }
 
 boolean KnuseZumo::stillSeesEnemy() {
-  sendSonarPing();
-  return !sonarDistances.isLastNDigit(stillSeesEnemyZeros, 0, 0);
+  sendSonarPingLeft();
+  sendSonarPingRight();
+  return !(leftSonarDistances.isLastNDigit(stillSeesEnemyZeros, 0, 0) || rightSonarDistances.isLastNDigit(stillSeesEnemyZeros, 0, 0));
 }
 
