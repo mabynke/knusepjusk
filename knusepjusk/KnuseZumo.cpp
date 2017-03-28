@@ -63,12 +63,12 @@ float KnuseZumo::rightSonarDistance() {
 boolean KnuseZumo::newEnemyDetected() {
   sendSonarPingLeft();
   sendSonarPingRight();
-  return !(leftSonarDistances.isLastNDigit(newEnemyDetectedZeros, 0, 0) || rightSonarDistances.isLastNDigit(newEnemyDetectedZeros, 0, 0));
+  return !(leftSonarDistances.isLastNDigit(newEnemyDetectedZeros, 0, 0) && rightSonarDistances.isLastNDigit(newEnemyDetectedZeros, 0, 0));
 }
 
 boolean KnuseZumo::stillSeesEnemy() {
   sendSonarPingLeft();
   sendSonarPingRight();
-  return !(leftSonarDistances.isLastNDigit(stillSeesEnemyZeros, 0, 0) || rightSonarDistances.isLastNDigit(stillSeesEnemyZeros, 0, 0));
+  return !(leftSonarDistances.isLastNDigit(stillSeesEnemyZeros, 0, 0) && rightSonarDistances.isLastNDigit(stillSeesEnemyZeros, 0, 0));
 }
 
