@@ -51,7 +51,7 @@ int findBorder(ZumoReflectanceSensorArray &sensors) {
   if (left && secondLeft) return 2;
   if (left) return 1;
   if (right && secondRight) return 4;
-  if (right) return 3;
+  if (right) return 5;
   return 0;
 }
 

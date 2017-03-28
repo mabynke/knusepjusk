@@ -3,8 +3,10 @@
 
 const int ledPin=A4;
 
-const int echoPin = 2;
-const int triggerPin = 3;
+const int rightEchoPin = 2;
+const int rightTriggerPin = 2;
+const int leftEchoPin = 3;
+const int leftTriggerPin = 3;
 const int maxDistance = 20;
 
 const int servoPin = 6;
