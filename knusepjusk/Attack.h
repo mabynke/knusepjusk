@@ -9,6 +9,7 @@
 
 State attack(KnuseZumo &zumo, ZumoReflectanceSensorArray &sensors) {
   Serial.println("Attack");
+  int currentStatus;
   float leftDistance;
   float rightDistance;
 
@@ -19,7 +20,7 @@ State attack(KnuseZumo &zumo, ZumoReflectanceSensorArray &sensors) {
       return AwayFromBorder;
     }
     
-    int currentStatus = sonarStatus();
+    currentStatus = sonarStatus();
     
     if (currentStatus == 0) { // Ser noe rett foran
       setSpeeds(400, 400);
