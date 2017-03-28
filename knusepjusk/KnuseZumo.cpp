@@ -14,6 +14,18 @@ KnuseZumo::KnuseZumo(NewPing &leftSonar, NewPing &rightSonar) :
   rightSonarDistances(sonarNumber)
   {};
 
+boolean KnuseZumo::newEnemyDetected() {
+  /*
+   * Denne metoden burde kalles fra alle tilstandene utenom angrepstilstand(ene)
+   * Metoden sender ping fra begge sonarene og 
+   * returnerer 'true' hvis det har vært 'newEnemyDetectedZeros' ikke-null 
+   * verdier fra minst en av sonarene
+   */
+  sendSonarPingLeft();
+  sendSonarPingRight();
+  return !(leftSonarDistances.isLastNDigit(newEnemyDetectedZeros, 0, 0) && rightSonarDistances.isLastNDigit(newEnemyDetectedZeros, 0, 0));
+}
+
 void KnuseZumo::turnOnSpot(int _speed) {
   /*
    * Fart større enn 0: Svinger mot klokken
@@ -50,25 +62,38 @@ void KnuseZumo::sendSonarPingRight() {
   rightSonarDistances.add(rightSonar.convert_cm(time));
 }
 
-float KnuseZumo::leftSonarDistance() {
-  sendSonarPing();
-  return leftSonarDistances.getAverage();
-}
-
-float KnuseZumo::rightSonarDistance() {
-  sendSonarPing();
-  return rightSonarDistances.getAverage();
-}
-
-boolean KnuseZumo::newEnemyDetected() {
-  sendSonarPingLeft();
-  sendSonarPingRight();
-  return !(leftSonarDistances.isLastNDigit(newEnemyDetectedZeros, 0, 0) && rightSonarDistances.isLastNDigit(newEnemyDetectedZeros, 0, 0));
-}
-
 boolean KnuseZumo::stillSeesEnemy() {
   sendSonarPingLeft();
   sendSonarPingRight();
   return !(leftSonarDistances.isLastNDigit(stillSeesEnemyZeros, 0, 0) && rightSonarDistances.isLastNDigit(stillSeesEnemyZeros, 0, 0));
 }
 
+int KnuseZumo::sonarStatus() {
+  // Left: -1, Both: 0, Right: 1, No: -2
+  
+  bool seesLeft = !leftSonarDistances.isLastNDigit(1, 0, 0);
+  bool seesRight = !rightSonarDistances.isLastNDigit(1, 0, 0);
+  if (seesLeft && seesRight) {
+    return 0;
+  } else if (seesLeft) {
+    return -1;
+  } else if (seesRight) {
+    return 1;
+  } else {
+    return -2;
+  }                            
+}
+
+float KnuseZumo::leftSonarDistance() {
+  /*
+   * Må kalles etter 'stillSeesEnemy()'
+   */
+  return leftSonarDistances.getAverage();
+}
+
+float KnuseZumo::rightSonarDistance() {
+   /*
+   * Må kalles etter 'stillSeesEnemy()'
+   */
+  return rightSonarDistances.getAverage();
+}

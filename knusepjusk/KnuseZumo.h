@@ -29,14 +29,15 @@
 class KnuseZumo : public PLab_ZumoMotors {
     public:
         KnuseZumo(NewPing &, NewPing &);
+        boolean newEnemyDetected();
         void turnOnSpot(int _speed);
         void driveAndTurn(int _speed, int angle);
         void sendSonarPingLeft();
         void sendSonarPingRight();
         float leftSonarDistance();
         float rightSonarDistance();
-        boolean newEnemyDetected();
         boolean stillSeesEnemy();
+        int sonarStatus();
     private:
         static const int NUM_SENSORS = 6;
         static const int QTR_THRESHOLD = 1800;
