@@ -29,22 +29,23 @@
 
 class KnuseZumo : public PLab_ZumoMotors {
     public:
-        KnuseZumo(NewPing &, NewServo &);
+        KnuseZumo(NewPing &, NewPing &, NewServo &);
         void turnOnSpot(int _speed);
-        float sonarDistance();
-        void stepServo();
-        void setForwardServo();
         void driveAndTurn(int _speed, int angle);
-        boolean isNoBorder();
+        void sendSonarPingLeft();
+        void sendSonarPingRight();
+        float leftSonarDistance();
+        float rightSonarDistance();
         boolean newEnemyDetected();
         boolean stillSeesEnemy();
     private:
         static const int NUM_SENSORS = 6;
         static const int QTR_THRESHOLD = 1800;
         static const int SERVO_OFFSET = 47;
-        ArrayRing sonarDistances;
-        NewPing sonar;
-        NewServo myServo;
+        ArrayRing leftSonarDistances;
+        ArrayRing rightSonarDistances;
+        NewPing leftSonar;
+        NewPing rightSonar;
         int degreesServo = 0;
         int degreesStep = 10;
 
