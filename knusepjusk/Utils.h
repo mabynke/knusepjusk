@@ -1,7 +1,12 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <PLabBTSerial.h>
+#include "Pins.h"
 #define QTR_THRESHOLD 1800;
+
+
+PLabBTSerial* btSerial;
 
 boolean fittingTime(int currentTime, int startTime, int duration) {
   return (currentTime - startTime < duration);
@@ -55,4 +60,47 @@ int findBorder(ZumoReflectanceSensorArray &sensors) {
   return 0;
 }
 
+void BTSerialMessageReceived(String msgString,int msgValue) {
+  Serial.print("Message:"); Serial.print(msgString); // Debug print
+  Serial.print(", Value:"); Serial.println(msgValue);  // Debug print
+  if (msgString == "#speed") {
+    //TODO
+  } 
+}
+
+char msg[100];
+void updateBTSerial() {
+    int availableCount = btSerial->available();
+    if (availableCount > 0) {
+        btSerial->read(msg, availableCount);
+        char *divided = strchr(msg,',');
+        int msgValue = 0;
+        if (divided != 0) {
+            divided[0] = 0; divided++;
+            String str(divided);
+            msgValue = str.toInt();
+        };  
+        String msgString(msg);
+        BTSerialMessageReceived(msgString,msgValue);   
+    }
+}
+
+// Always include these two methods .
+// They send a message to the BT port, without or with an int value
+void BTSerialSendMessage(String msgString) { //BRUK DENNE FOR Å SENDE EN STRENG
+    btSerial->println(msgString); 
+}
+
+void BTSerialSendMessage(String msgString,int msgValue) {
+    btSerial->print(msgString); 
+    btSerial->print(",");
+    btSerial->println(msgValue);
+}
+
+void initBTSerial() {
+  btSerial = new PLabBTSerial(txPin, rxPin);
+  btSerial->begin(9600);
+}
+
 #endif
+

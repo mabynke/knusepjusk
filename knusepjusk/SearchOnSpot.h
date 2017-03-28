@@ -9,6 +9,7 @@ boolean fittingTime(int currentTime, int startTime, int duration);  // funksjone
 
 State searchOnSpot(KnuseZumo &zumo, ZumoReflectanceSensorArray &sonar) {
   Serial.println("searchOnSpot");
+  BTSerialSendMessage("serchOnSpot");
   int randInt = rand()%2;
   int lowSpeed = 20;
   int highSpeed = 300;

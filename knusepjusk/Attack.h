@@ -9,7 +9,7 @@
 
 State attack(KnuseZumo &zumo, ZumoReflectanceSensorArray &sensors) {
   Serial.println("Attack");
-  
+  BTSerialSendMessage("Attack");
   zumo.driveAndTurn(400, 0);  // trengs bare å settes én gang
   
   while (zumo.stillSeesEnemy()) {
