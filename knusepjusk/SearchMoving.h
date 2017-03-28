@@ -13,18 +13,18 @@ State searchMoving(KnuseZumo &zumo, ZumoReflectanceSensorArray &sensors) {
   int angle = random(-60, 60);
   angle = 3.1415/180*angle;
   int startTime = millis();
-  int currentTime = startTime;
+  //int currentTime = startTime;
   int duration = random(300,500);
 
   zumo.driveAndTurn(300, angle);
-  while (fittingTime(currentTime, startTime, duration)) {
+  while (fittingTime(millis(), startTime, duration)) {
     if (findBorder(sensors) != 0) {
       return AwayFromBorder;
     }
     if (zumo.newEnemyDetected()) {
       return Attack;
     }
-    currentTime = millis();
+    //currentTime = millis();
   }
   return SearchOnSpot;
 }
