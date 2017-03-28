@@ -22,10 +22,11 @@ Pushbutton button(ZUMO_BUTTON);
  
 ZumoReflectanceSensorArray sensors;
 //PLabBTSerial btSerial(txPin, rxPin);
-NewPing sonar(triggerPin, echoPin, maxDistance);
+NewPing leftSonar(leftTriggerPin, leftEchoPin, maxDistance);
+NewPing rightSonar(rightTriggerPin, rightEchoPin, maxDistance);
 NewServo myServo; 
 
-KnuseZumo zumo(sonar, myServo);
+KnuseZumo zumo(leftSonar, rightSonar, myServo);
 
 void setup() {
   sensors.init(QTR_NO_EMITTER_PIN);  // 

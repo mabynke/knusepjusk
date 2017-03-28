@@ -18,8 +18,6 @@ State searchOnSpot(KnuseZumo &zumo, ZumoReflectanceSensorArray &sonar) {
     zumo.setSpeeds(highSpeed, lowSpeed);
   }
   
-  zumo.setForwardServo();
-  
   int startTime = millis();
   //int currentTime = startTime;
   int duration = 2000;
