@@ -7,7 +7,7 @@ const int newEnemyDetectedZeros = 4;
 const int stillSeesEnemyZeros = 20;
 const int forwardServoMargin = 5; // grader
 
-KnuseZumo::KnuseZumo(NewPing &leftSonar, NewPing &rightSonar, NewServo &servo) :
+KnuseZumo::KnuseZumo(NewPing &leftSonar, NewPing &rightSonar) :
   leftSonar(leftSonar),
   rightSonar(rightSonar),
   leftSonarDistances(sonarNumber),
@@ -63,12 +63,12 @@ float KnuseZumo::rightSonarDistance() {
 boolean KnuseZumo::newEnemyDetected() {
   sendSonarPingLeft();
   sendSonarPingRight();
-  return !(leftSonarDistances.isLastNDigit(newEnemyDetectedZeros, 0, 0) || rightSonarDistances.isLastNDigit(newEnemyDetectedZeros, 0, 0));
+  return !(leftSonarDistances.isLastNDigit(newEnemyDetectedZeros, 0, 0) && rightSonarDistances.isLastNDigit(newEnemyDetectedZeros, 0, 0));
 }
 
 boolean KnuseZumo::stillSeesEnemy() {
   sendSonarPingLeft();
   sendSonarPingRight();
-  return !(leftSonarDistances.isLastNDigit(stillSeesEnemyZeros, 0, 0) || rightSonarDistances.isLastNDigit(stillSeesEnemyZeros, 0, 0));
+  return !(leftSonarDistances.isLastNDigit(stillSeesEnemyZeros, 0, 0) && rightSonarDistances.isLastNDigit(stillSeesEnemyZeros, 0, 0));
 }
 

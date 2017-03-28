@@ -9,11 +9,10 @@
 
 State attack(KnuseZumo &zumo, ZumoReflectanceSensorArray &sensors) {
   Serial.println("Attack");
-  
-  //zumo.driveAndTurn(400, 0);  // trengs bare å settes én gang
-  
   float leftDistance;
   float rightDistance;
+
+  BTSerialSendMessage("Attack");
   
   while (zumo.stillSeesEnemy()) {
     if (findBorder(sensors) != 0) {

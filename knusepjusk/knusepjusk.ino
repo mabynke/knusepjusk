@@ -4,7 +4,7 @@
 //#include <QTRSensors.h>
 #include <ZumoReflectanceSensorArray.h>
 //#include <SoftwareSerial.h>
-//#include <PLabBTSerial.h>
+#include <PLabBTSerial.h>
 
 #include "Pins.h"
 #include "KnuseZumo.h"
@@ -14,26 +14,19 @@
 #include "SearchMoving.h"
 #include "AwayFromBorder.h"
 
-// NB! 47 I VÅRT TILFELLE
-#define SERVO_OFFSET 47  // DS: Degrees offset of servo... error in hardware...
-
-
 Pushbutton button(ZUMO_BUTTON);
  
 ZumoReflectanceSensorArray sensors;
-//PLabBTSerial btSerial(txPin, rxPin);
 NewPing leftSonar(leftTriggerPin, leftEchoPin, maxDistance);
 NewPing rightSonar(rightTriggerPin, rightEchoPin, maxDistance);
-NewServo myServo; 
 
-KnuseZumo zumo(leftSonar, rightSonar, myServo);
+KnuseZumo zumo(leftSonar, rightSonar);
 
 void setup() {
   sensors.init(QTR_NO_EMITTER_PIN);  // 
   Serial.begin(9600);
+  initBTSerial();
   pinMode(ledPin,OUTPUT);
-  myServo.attach(servoPin); 
-  myServo.write(90 - SERVO_OFFSET);
   Serial.println("Før knapp");
   button.waitForButton(); // start when button pressed
   Serial.println("Etter knapp");
@@ -43,12 +36,7 @@ void setup() {
 State state = SearchMoving;
 
 void loop() {
-//  Serial.print(zumo.sonarDistance());
-//  Serial.print(" ");
-//  Serial.print(zumo.newEnemyDetected());
-//  Serial.print(" ");
-//  Serial.println(zumo.stillSeesEnemy());
-//  zumo.driveAndTurn(100, 0);
+  updateBTSerial();
   switch(state) {
     case Attack:
       state = attack(zumo, sensors);

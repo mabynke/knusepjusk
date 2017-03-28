@@ -9,7 +9,7 @@
 
 State searchMoving(KnuseZumo &zumo, ZumoReflectanceSensorArray &sensors) {
   Serial.println("searchMoving");
-  
+  BTSerialSendMessage("searchMoving");
   int angle = random(-60, 60);
   angle = 3.1415/180*angle;
   int startTime = millis();
