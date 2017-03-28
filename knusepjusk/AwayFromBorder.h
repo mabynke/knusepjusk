@@ -18,7 +18,12 @@ State awayFromBorder(KnuseZumo &zumo, ZumoReflectanceSensorArray &sensors) {
   if (borderStatus == 1 || borderStatus == 2) {
     zumo.backward(REVERSE_SPEED, 10);
     zumo.turnRight(TURN_SPEED,randAngle);
-  } else if (borderStatus == 3 || borderStatus == 4) {
+  }
+  else if (borderStatus == 3) {
+    zumo.backward(REVERSE_SPEED, 10);
+    zumo.turnRight(TURN_SPEED,random(150, 210));
+  }
+  else if (borderStatus == 4 || borderStatus == 5) {
     zumo.backward(REVERSE_SPEED, 10);
     zumo.turnLeft(TURN_SPEED,randAngle);
   }
