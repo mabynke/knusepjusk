@@ -7,7 +7,7 @@
 
 boolean fittingTime(int currentTime, int startTime, int duration);  // funksjoner må deklareres før de brukes
 
-State searchOnSpot(KnuseZumo &zumo, ZumoReflectanceSensorArray &sonar) {
+State searchOnSpot(KnuseZumo &zumo, ZumoReflectanceSensorArray &sensors) {
   Serial.println("searchOnSpot");
   BTSerialSendMessage("serchOnSpot");
   int randInt = rand()%2;
@@ -27,7 +27,7 @@ State searchOnSpot(KnuseZumo &zumo, ZumoReflectanceSensorArray &sonar) {
     if (zumo.newEnemyDetected()) {
       return Attack;
     }
-    if (findBorder(sonar) != 0) {
+    if (findBorder(sensors) != 0) {
       return AwayFromBorder;
     }
     //currentTime = millis();

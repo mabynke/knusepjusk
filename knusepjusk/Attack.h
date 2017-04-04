@@ -8,6 +8,9 @@
 #include "States.h"
 
 State attack(KnuseZumo &zumo, ZumoReflectanceSensorArray &sensors) {
+  const int lowSpeed = 180;
+  const int highSpeed = 400;
+
   Serial.println("Attack");
   int currentStatus;
   float leftDistance;
@@ -20,23 +23,24 @@ State attack(KnuseZumo &zumo, ZumoReflectanceSensorArray &sensors) {
       return AwayFromBorder;
     }
     
-    currentStatus = sonarStatus();
+    currentStatus = zumo.sonarStatus();
+    BTSerialSendMessage("Attack currentStatus: ", currentStatus);
     
     if (currentStatus == 0) { // Ser noe rett foran
-      setSpeeds(400, 400);
+      zumo.setSpeeds(400, 400);
       continue;
     }
     
-    leftDistance = leftSonarDistance();
-    rightDistance = rightSonarDistance();
+    leftDistance = zumo.leftSonarDistance();
+    rightDistance = zumo.rightSonarDistance();
     if (currentStatus == -1) { // Ser noe til venstre
-      setSpeeds(200, 400);
+      zumo.setSpeeds(lowSpeed, highSpeed);
     }
     else if (currentStatus == 1) { // Ser noe til høyre
-      setSpeeds(400, 200);
+      zumo.setSpeeds(highSpeed, lowSpeed);
     }
-    else if (currentStatus == -2) { // Ser ingenting
-      setSpeeds(200, 200);
+    else { // Ser ingenting
+      zumo.setSpeeds(200, 200);
     }
   }
   return SearchOnSpot;

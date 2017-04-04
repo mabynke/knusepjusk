@@ -1,5 +1,5 @@
 #ifndef STATE_H
 #define STATE_H
 
-enum State {Attack, SearchOnSpot, SearchMoving, AwayFromBorder};
+enum State {Attack, SearchOnSpot, SearchMoving, AwayFromBorder, StartState};
 #endif

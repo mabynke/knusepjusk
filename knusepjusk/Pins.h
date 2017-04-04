@@ -7,7 +7,7 @@ const int rightEchoPin = 2;
 const int rightTriggerPin = 2;
 const int leftEchoPin = 3;
 const int leftTriggerPin = 3;
-const int maxDistance = 20;
+const int maxDistance = 35;
 
 const int servoPin = 6;
 

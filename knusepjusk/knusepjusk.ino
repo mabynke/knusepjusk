@@ -13,6 +13,7 @@
 #include "SearchOnSpot.h"
 #include "SearchMoving.h"
 #include "AwayFromBorder.h"
+#include "StartState.h"
 
 Pushbutton button(ZUMO_BUTTON);
  
@@ -33,7 +34,7 @@ void setup() {
   
 }
 
-State state = SearchMoving;
+State state = StartState;
 
 void loop() {
   updateBTSerial();
@@ -49,6 +50,9 @@ void loop() {
       break;
     case AwayFromBorder:
       state = awayFromBorder(zumo, sensors);
+      break;
+    case StartState:
+      state = startState(zumo, sensors);
       break;
   }
 }
